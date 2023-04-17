@@ -2,11 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // your code here
   addingEventListeners();
 });
+let taskObjArr = [];
 
 function addingEventListeners() {
   document
     .getElementById("create-task-form")
     .addEventListener("submit", handleFormSubmit);
+  document.getElementById("sort-tasks").addEventListener("change", sortTask);
 }
 
 function handleFormSubmit(e) {
@@ -14,6 +16,9 @@ function handleFormSubmit(e) {
   const task = e.target[0].value;
   const priorityLevel = parseInt(e.target.priority.value);
 
+  const taskObj = { task, priorityLevel };
+  taskObjArr.push(taskObj);
+  sortTask();
   displayTask(task, priorityLevel);
 }
 
@@ -42,5 +47,14 @@ function getPriorityColor(priorityLevel) {
     return "blue";
   } else {
     return "green";
+  }
+}
+
+function sortTask() {
+  const sortTasksSelect = document.getElementById("sort-tasks");
+  if (sortTasksSelect.value === "h-l") {
+    taskObjArr.sort((a, b) => a.priorityLevel - b.priorityLevel);
+  } else {
+    taskObjArr.sort((a, b) => b.priorityLevel - a.priorityLevel);
   }
 }
